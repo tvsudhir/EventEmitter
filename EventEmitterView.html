@@ -1,0 +1,48 @@
+<html>
+
+<head>
+	<script src="./EventEmitter.js"></script>
+</head>
+
+<body>
+
+<script>
+	var foo = {
+		myEventEmitter : new EventEmitterOne2Many(),
+
+		init: function () {
+			this.myEventEmitter.on("test", this.addUpParams);
+		},
+
+		addUpParams: function () {
+			var sum = 0;
+
+			Array.prototype.forEach.call(arguments, function (arg) {
+				sum = sum + (parseInt(arg, 10) || 0);
+			});
+
+			console.log("Sum: ", sum); 
+
+			return sum; 
+		},
+
+		applyParams : function () {
+			var params = document.getElementById("params").value || "";
+		
+			//this.myEventEmitter.emit("test", params.split(","));
+			this.myEventEmitter.emit.apply(this.myEventEmitter, ["test"].concat(params.split(",")));
+		}
+	}
+
+	foo.init();
+
+</script>
+
+<label>Parameters: </label>
+<input id="params" type="text" />
+<br />
+<input type="button" value="Apply params" onclick="foo.applyParams()" />
+
+</body>
+
+</html>
